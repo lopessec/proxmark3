@@ -1577,13 +1577,11 @@ out:
 		uint8_t block[16] = {0x00};
 		for (uint8_t i = 0; i < sectorsCnt; ++i ) {
 			mfEmlGetMem(block, FirstBlockOfSector(i) + NumBlocksPerSector(i) - 1, 1);
-			/*
 			if (e_sector[i].foundKey[0])
-				 memcpy(block, e_sector[i].keyA, 6);
+				num_to_bytes(e_sector[i].Key[0], 6, block);
 			if (e_sector[i].foundKey[1])
-				memcpy(block+10, e_sector[i].keyB, 6);			
+				num_to_bytes(e_sector[i].Key[1], 6, block+10);
 			mfEmlSetMem(block, FirstBlockOfSector(i) + NumBlocksPerSector(i) - 1, 1);
-			*/
 		}
 		PrintAndLogEx(NORMAL, "Found keys have been transferred to the emulator memory");
 	}
@@ -1787,7 +1785,7 @@ int CmdHF14AMfChk(const char *Cmd) {
 
 	
 	// check keys.
-	for (trgKeyType = !keyType;  trgKeyType < 2;  (keyType==2) ? (++trgKeyType) : (trgKeyType=2) ) {
+	for (trgKeyType = keyType;  trgKeyType < 2;  (keyType==2) ? (++trgKeyType) : (trgKeyType=2) ) {
 
 		int b = blockNo;
 		for (int i = 0; i < SectorsCnt; ++i) {
